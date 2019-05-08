@@ -1,0 +1,89 @@
+1. Two Sum
+
+Given an array of integers, return indices of the two numbers such that they add up to a specific target.
+
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+Example:
+
+Given nums = [2, 7, 11, 15], target = 9,
+
+Because nums[0] + nums[1] = 2 + 7 = 9,
+return [0, 1].
+
+
+思路1：
+两数求和问题，直观思路是暴力查找，遍历所有可能的组合，直到找到满足条件的情况，时间复杂度是O(n2)。
+该方法优势是比较直观，代码简洁，但性能较差。
+
+代码如下：
+
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        int i = -1;
+        int j = -1;
+outer:
+        for (i = 0; i < nums.length - 1; i++) {
+            for (j = i + 1; j < nums.length; j++) {
+                if ((nums[i] + nums[j]) == target) {
+                    break outer;
+                }
+            }
+        }
+
+        return new int[]{i, j};
+    }
+}
+
+思路2：
+另一种思路是可以将数组中的元素做为key, 数组下标作为value存储在Map中，因为数组中可能出现相同的元素，所以可将Map的value以List的方式存储。
+然后遍历数组中的元素，查找当前元素与target的差值是否作为key存储在Map中。
+
+如果该key存在并且该key与数组当前元素不同，则数组当前元素下标与该key对应的value值即为最终结果；
+如果该key存在但与数组当前元素相同，可查看以当前数组元素为key所对应的值列表长度是否大于1，值列表长度大于1则列表中的值即为最终结果。
+
+该方法需引用Java中的集合类库，但性能较好，时间复杂度是O(n)。
+
+代码如下：
+
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        int i = -1;
+        int j = -1;
+        Map<Integer, List<Integer>> map = new HashMap<Integer, List<Integer>>();
+        for (int k = 0; k < nums.length; k++) {
+            List<Integer> valueList = map.get(nums[k]);
+            if (valueList == null) {
+                valueList = new ArrayList<Integer>();
+                valueList.add(k);
+                map.put(nums[k], valueList);
+                continue;
+            }
+            valueList.add(k);
+        }
+        for (int k = 0; k < nums.length - 1; k++) {
+            int diff = target - nums[k];
+            if (map.containsKey(diff) == false) {
+                continue;
+            }
+            
+            if (diff != nums[k]) {
+                i = k;
+                j = map.get(diff).get(0);
+                break;
+            }
+            
+            if (diff == nums[k] && map.get(diff).size() >= 2) {
+                i = map.get(diff).get(0);
+                j = map.get(diff).get(1);
+                break;
+            }
+        }
+
+        return new int[]{i, j};
+    }
+}
+
+
+Note:
+2019年5月8日第一次更新。
