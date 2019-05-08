@@ -30,7 +30,6 @@ outer:
                 }
             }
         }
-
         return new int[]{i, j};
     }
 }
@@ -66,20 +65,19 @@ class Solution {
             if (map.containsKey(diff) == false) {
                 continue;
             }
-            
+
             if (diff != nums[k]) {
                 i = k;
                 j = map.get(diff).get(0);
                 break;
             }
-            
+
             if (diff == nums[k] && map.get(diff).size() >= 2) {
                 i = map.get(diff).get(0);
                 j = map.get(diff).get(1);
                 break;
             }
         }
-
         return new int[]{i, j};
     }
 }
