@@ -60,3 +60,6 @@ class Solution {
         return fakeHead.next;
     }
 }
+
+Note:
+2019年5月15日第一次更新。
