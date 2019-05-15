@@ -1,0 +1,62 @@
+2. Add Two Numbers
+
+You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
+
+You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+Example:
+
+Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
+Output: 7 -> 0 -> 8
+Explanation: 342 + 465 = 807.
+
+思路：
+两数求和问题，一种直观想法是将列表表示的整数转换为编程语言中的整数类型，再相加，再转换为列表表示的类型，
+但这种办法不能处理当列表数字超过编程语言中整数类型所表示的上限的情况，所以要考虑其它办法。
+
+另一种想法是将列表中的位数从低到高位，逐位相加，保存进们标记，从而得到最终的结果列表，时间复杂度为O(n)。
+
+代码如下：
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode fakeHead = new ListNode(-1);
+        boolean flag = false;
+        
+        ListNode p = fakeHead;
+        p.next = null;
+        
+        int tmp = 0;
+        while ((l1 != null) || (l2 != null) || (flag == true)) {
+            tmp = 0;
+            if (l1 != null) {
+                tmp += l1.val;
+                l1 = l1.next;
+            }
+            if (l2 != null) {
+                tmp += l2.val;
+                l2 = l2.next;
+            }
+            if (flag == true) {
+                tmp += 1;
+                flag = false;
+            }
+            if (tmp >= 10) {
+                flag = true;
+                tmp %= 10;
+            }
+            p.next = new ListNode(tmp);
+            p = p.next;
+            p.next = null;
+        }
+        return fakeHead.next;
+    }
+}
